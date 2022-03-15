@@ -5,17 +5,13 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-import com.ld575.exam.listener.BtnDocumentListener;
-import com.ld575.exam.listener.BtnLoginListener;
-import com.ld575.exam.listener.BtnManageListener;
-import com.ld575.exam.listener.BtnTestExamListener;
+import com.ldl575.c9.exam.listener.BtnDocumentListener;
+import com.ldl575.c9.exam.listener.BtnLoginListener;
+import com.ldl575.c9.exam.listener.BtnManageListener;
+import com.ldl575.c9.exam.listener.BtnTestExamListener;
 
 public class Menu {
 
-	private boolean isAdmin = true;
-	
-	private JFrame frame;
-	
 	private static final String MANAGE = "Quản lý";
 	private static final String USER = "Người dùng";
 	private static final String MANAGE_EXAM = "Quản lý bài thi"; 
@@ -25,13 +21,15 @@ public class Menu {
 	private static final String INFOR = "Thông tin";
 	private static final String LOGIN = "Đăng nhập";
 	private static final String LOGOUT = "Đăng xuất";
-	
+
+	private JFrame frame;
+	private boolean isAdmin = true;
 	private String currentMenu;
 	
-	public MenuExam() {
+	public Menu() {
 	}
 	
-	public MenuExam(JFrame frame, String currentMenu) {
+	public Menu(JFrame frame, String currentMenu) {
 		this.frame = frame;
 		this.currentMenu = currentMenu;
 	}
