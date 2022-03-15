@@ -1,19 +1,14 @@
 package com.ldl575.c9.exam;
 
-import java.util.List;
-
 import javax.swing.BoxLayout;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
+import org.hibernate.dialect.Database;
 
-import com.ld575.exam.Application;
-import com.ld575.exam.db.Database;
-import com.ld575.exam.page.DashBoard;
+import com.ldl575.c9.exam.page.DashBoard;
 
-public class Application {
+public class Application extends JFrame {
 	
 //	public static void main(String[] args) {
 //		SessionFactory sessionFatory = HibernateUtils.getSessionFactory();
@@ -33,18 +28,12 @@ public class Application {
 	private static final long serialVersionUID = 1L;
 
 	private JPanel controlPanel;
-	private static Database db;
 
 	public static void main(String[] args) {
 		Application app = new Application();
-		connectDB();
 		app.start();
 	}
 
-	private static void connectDB() {
-		db = new Database();
-		db.openConnection();
-	}
 	
 	private void start() {
 		this.setSize(1000, 600);
