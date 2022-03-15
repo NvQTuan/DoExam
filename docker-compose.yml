@@ -1,0 +1,14 @@
+version: "3.9"
+    
+services:
+  db:
+    image: mysql
+    volumes:
+      - D:\Projects\Exam\Database:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: abc123#A
+      MYSQL_DATABASE: EXAM
+      MYSQL_USER: admin
+    ports:
+      - "3306:3306"
