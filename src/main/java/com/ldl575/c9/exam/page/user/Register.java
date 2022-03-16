@@ -9,13 +9,16 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.ldl575.c9.exam.Menu;
+import org.mindrot.jbcrypt.BCrypt;
 
-import at.favre.lib.crypto.bcrypt.BCrypt;
+import com.ldl575.c9.exam.Menu;
+import com.ldl575.c9.exam.common.ShowMessage;
+import com.ldl575.c9.exam.entity.UserEntity;
+import com.ldl575.c9.exam.page.Login;
+import com.ldl575.c9.exam.service.UserService;
 
 public class Register extends JFrame {
 	/**
@@ -27,6 +30,16 @@ public class Register extends JFrame {
 	
 	private JFrame self;
 	private JPanel controlPanel;
+	
+	private UserService userService;
+	
+	public Register() {
+	}
+	
+	// DI
+	public Register(UserService userService) {
+		this.userService = userService;
+	}
 	
 	private JTextField txtUserName;
 	private JTextField txtFullName;
@@ -55,7 +68,7 @@ public class Register extends JFrame {
 		
 		gbc.gridx = 1;
 		gbc.gridy = 0;
-		JTextField txtUserName = new JTextField(20);
+		txtUserName = new JTextField(20);
 		txtUserName.setName("userName");
 		panel.add(txtUserName, gbc);
 		
@@ -82,7 +95,7 @@ public class Register extends JFrame {
 		
 		gbc.gridx = 1;
 		gbc.gridy = 2;
-		JTextField txtPassword = new JTextField(20);
+		txtPassword = new JTextField(20);
 		txtUserName.setName("password");
 		panel.add(txtPassword, gbc);
 		
@@ -96,7 +109,7 @@ public class Register extends JFrame {
 		
 		gbc.gridx = 1;
 		gbc.gridy = 3;
-		JTextField txtRePassword = new JTextField(20);
+		txtRePassword = new JTextField(20);
 		txtRePassword.setName("re-password");
 		panel.add(txtRePassword, gbc);
 		
@@ -107,6 +120,8 @@ public class Register extends JFrame {
 		gbc.gridwidth = 2;
 		JButton btnRegister = new JButton("Đăng ký");
 		panel.add(btnRegister, gbc);
+		
+		btnRegisterListener(btnRegister);
 		
 		panel.setPreferredSize(getSize());
 		controlPanel.add(panel);
@@ -120,14 +135,24 @@ public class Register extends JFrame {
 				String password = txtPassword.getText();
 				String rePassword = txtRePassword.getText();
 				if (!password.equals(rePassword)) {
-					JOptionPane.showMessageDialog(self, "Mật khẩu không trùng khớp", 
-							"Thông báo lỗi", JOptionPane.ERROR_MESSAGE);
+					ShowMessage.error(self, "Mật khẩu không trùng khớp");
 				}
-				String hashPassword = BCrypt.withDefaults().hashToString(50, password.toCharArray());
+				String hassPassword = BCrypt.hashpw(password, BCrypt.gensalt());
 				
+				UserEntity userEntity = UserEntity.builder()
+						.userName(userName)
+						.fullName(fullName)
+						.password(hassPassword)
+						.build();
+				
+				userService.save(userEntity);
+				
+				ShowMessage.info(self, "Đăng ký thành công!");
+				redirectToLogin();
 			}
 		});
 	}
+	
 	private void settingFrame() {
 		this.add(controlPanel);
 		this.setPreferredSize(getSize());
@@ -138,4 +163,8 @@ public class Register extends JFrame {
 		this.setTitle(TITLE);
 	}
 	
+	private void redirectToLogin() {
+		self.dispose();
+		new Login().start();
+	}
 }

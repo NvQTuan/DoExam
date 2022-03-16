@@ -1,14 +1,12 @@
 package com.ldl575.c9.exam;
 
-import javax.swing.BoxLayout;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import org.hibernate.SessionFactory;
 
-import org.hibernate.dialect.Database;
+import com.ldl575.c9.exam.page.Login;
 
-import com.ldl575.c9.exam.page.DashBoard;
-
-public class Application extends JFrame {
+public class Application {
+	
+	private static SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
 	
 //	public static void main(String[] args) {
 //		SessionFactory sessionFatory = HibernateUtils.getSessionFactory();
@@ -22,38 +20,21 @@ public class Application extends JFrame {
 //		}
 //	}
 	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-	private JPanel controlPanel;
-
 	public static void main(String[] args) {
 		Application app = new Application();
-		app.start();
+		app.LoginPage();
 	}
 
-	
-	private void start() {
-		this.setSize(1000, 600);
-		controlPanel = new JPanel();
-		BoxLayout layout = new BoxLayout(controlPanel, BoxLayout.X_AXIS);
-		controlPanel.setLayout(layout);
-		dashBoardPage();
-		settingFrame();
-	}
+//	private void settingFrame() {
+//		this.add(controlPanel);
+//		this.setLocationRelativeTo(null);
+//		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+//		this.setVisible(true);
+//		this.setTitle("Ứng dụng thi");
+//	}
 
-	private void settingFrame() {
-		this.add(controlPanel);
-		this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.setVisible(true);
-		this.setTitle("Ứng dụng thi");
-	}
-
-	private void dashBoardPage() {
-		DashBoard dashBoard = new DashBoard(this, controlPanel);
-		dashBoard.show(controlPanel);
+	private void LoginPage() {
+		Login login = new Login();
+		login.start();
 	}
 }

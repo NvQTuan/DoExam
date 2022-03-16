@@ -10,20 +10,24 @@ import com.ldl575.c9.exam.listener.BtnDocumentListener;
 import com.ldl575.c9.exam.listener.BtnManageListener;
 import com.ldl575.c9.exam.listener.BtnTestExamListener;
 
-public class DashBoard {
+public class DashBoard extends JFrame {
 
-	private JFrame frame;
+	private JFrame self;
 	private JPanel controlPanel;
 	
 	public DashBoard() {
 	}
 	
-	public DashBoard(JFrame frame, JPanel controlPanel) {
-		this.frame = frame;
-		this.controlPanel = controlPanel;
+	public void start() {
+		self = this;
+		this.setSize(1000, 600);
+		controlPanel = new JPanel();
+		showScreen();
+		settingFrame();
 	}
 	
-	public void show(JPanel controlPanel) {
+	public void showScreen() {
+		// TODO add menu
 		JPanel jPanel = new JPanel();
 		GridBagLayout layout = new GridBagLayout();
 		jPanel.setLayout(layout);
@@ -37,9 +41,17 @@ public class DashBoard {
 		jPanel.add(btnManage);
 		jPanel.add(btnTestExam);
 		jPanel.add(btnDocument);
-		btnManage.addActionListener(new BtnManageListener(frame));
-		btnTestExam.addActionListener(new BtnTestExamListener(frame));
-		btnDocument.addActionListener(new BtnDocumentListener(frame));
+		btnManage.addActionListener(new BtnManageListener(self));
+		btnTestExam.addActionListener(new BtnTestExamListener(self));
+		btnDocument.addActionListener(new BtnDocumentListener(self));
 		controlPanel.add(jPanel);
+	}
+	
+	private void settingFrame() {
+		this.add(controlPanel);
+		this.setLocationRelativeTo(null);
+		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.setVisible(true);
+		this.setTitle("Ứng dụng thi");
 	}
 }

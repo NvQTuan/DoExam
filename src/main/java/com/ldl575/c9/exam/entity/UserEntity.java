@@ -34,7 +34,7 @@ public class UserEntity {
 	
 	private String unit;
 	
-	@Column(length = 50)
+	@Column(length = 60)
 	private String password;
 	private String role;
 	private String mititaryRank;

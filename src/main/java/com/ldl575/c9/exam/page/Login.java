@@ -12,8 +12,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import com.ldl575.c9.exam.Menu;
+import com.ldl575.c9.exam.common.ShowMessage;
+import com.ldl575.c9.exam.entity.UserEntity;
 import com.ldl575.c9.exam.page.user.Register;
+import com.ldl575.c9.exam.service.UserService;
 
 public class Login extends JFrame {
 	/**
@@ -23,9 +28,16 @@ public class Login extends JFrame {
 
 	private static final String TITLE = "Đăng nhập";
 	
+	private JFrame self;
 	private JPanel controlPanel;
 
+	private JTextField txtUserName;
+	private JTextField txtPassword;
+	private UserService userService;
+	
 	public void start() {
+		userService = new UserService();
+		self = this;
 		this.setSize(1000, 600);
 		controlPanel = new JPanel();
 		showScreen();
@@ -46,7 +58,7 @@ public class Login extends JFrame {
 		
 		gbc.gridx = 1;
 		gbc.gridy = 0;
-		JTextField txtUserName = new JTextField(20);
+		txtUserName = new JTextField(20);
 		txtUserName.setName("userName");
 		panel.add(txtUserName, gbc);
 		
@@ -60,7 +72,7 @@ public class Login extends JFrame {
 		
 		gbc.gridx = 1;
 		gbc.gridy = 1;
-		JTextField txtPassword = new JTextField(20);
+		txtPassword = new JTextField(20);
 		txtUserName.setName("password");
 		panel.add(txtPassword, gbc);
 		
@@ -76,6 +88,7 @@ public class Login extends JFrame {
 		gbc.gridy = 2;
 		JButton btnLogin = new JButton("Đăng nhập");
 		panel.add(btnLogin, gbc);
+		addListenerLogin(btnLogin);
 		
 		panel.setPreferredSize(getSize());
 		controlPanel.add(panel);
@@ -86,7 +99,28 @@ public class Login extends JFrame {
 
 			public void actionPerformed(ActionEvent e) {
 				dispose();
-				new Register().start();
+				new Register(userService).start();
+			}
+		});
+	}
+	
+	private void addListenerLogin(JButton btnLogin) {
+		btnLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String userName = txtUserName.getText();
+				String password = txtPassword.getText();
+				UserEntity userEntity = userService.findByUserName(userName);
+				if (userEntity == null) {
+					ShowMessage.error(self, "Username không tìm thấy!");
+					return;
+				}
+				if (!BCrypt.checkpw(password, userEntity.getPassword())) {
+					ShowMessage.error(self, "Mật khẩu không đúng!");
+					return;
+				}
+
+				ShowMessage.info(self, "Login success!");
+				redirectToDashBoard();
 			}
 		});
 	}
@@ -99,5 +133,10 @@ public class Login extends JFrame {
 		this.setVisible(true);
 		this.setJMenuBar(new Menu(this, TITLE).getMenu());
 		this.setTitle(TITLE);
+	}
+	
+	private void redirectToDashBoard() {
+		self.dispose();
+		new DashBoard().start();	
 	}
 }
