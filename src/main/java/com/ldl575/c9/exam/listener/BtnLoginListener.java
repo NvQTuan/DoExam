@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 
+import com.ldl575.c9.exam.dto.common.ComunicatedDto;
 import com.ldl575.c9.exam.page.Login;
 
 public class BtnLoginListener implements ActionListener {
@@ -13,8 +14,8 @@ public class BtnLoginListener implements ActionListener {
 	public BtnLoginListener() {
 	}
 	
-	public BtnLoginListener(JFrame frame) {
-		this.frame = frame;
+	public BtnLoginListener(ComunicatedDto comunicatedDto) {
+		this.frame = comunicatedDto.getFrame();
 	}
 
 	public void actionPerformed(ActionEvent e) {

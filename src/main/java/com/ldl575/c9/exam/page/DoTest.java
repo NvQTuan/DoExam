@@ -7,6 +7,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import com.ldl575.c9.exam.Menu;
+import com.ldl575.c9.exam.dto.common.ComunicatedDto;
+import com.ldl575.c9.exam.entity.UserEntity;
 
 public class DoTest extends JFrame {
 	
@@ -17,7 +19,15 @@ public class DoTest extends JFrame {
 	
 	private static final String TITLE = "Làm bài thi";
 	private JPanel controlPanel;
+	private UserEntity userEntity;
+	
+	public DoTest() {
+	}
 
+	public DoTest(UserEntity userEntity) {
+		this.userEntity = userEntity;
+	}
+	
 	public void start() {
 		this.setSize(1000, 600);
 		this.setLayout(new GridLayout(1, 1));
@@ -31,7 +41,14 @@ public class DoTest extends JFrame {
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setVisible(true);
-		this.setJMenuBar(new Menu(this, TITLE).getMenu());
+		this.setJMenuBar(new Menu(getComunicatedDto(), TITLE).getMenu());
 		this.setTitle(TITLE);
+	}
+	
+	private ComunicatedDto getComunicatedDto() {
+		return ComunicatedDto.builder()
+			.frame(this)
+			.userEntity(userEntity)
+			.build();
 	}
 }

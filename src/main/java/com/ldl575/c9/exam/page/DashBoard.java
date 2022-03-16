@@ -6,16 +6,29 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import com.ldl575.c9.exam.Menu;
+import com.ldl575.c9.exam.dto.common.ComunicatedDto;
+import com.ldl575.c9.exam.entity.UserEntity;
 import com.ldl575.c9.exam.listener.BtnDocumentListener;
 import com.ldl575.c9.exam.listener.BtnManageListener;
 import com.ldl575.c9.exam.listener.BtnTestExamListener;
 
 public class DashBoard extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private static final String TITLE = "Ứng dụng thi";
 	private JFrame self;
 	private JPanel controlPanel;
+	private UserEntity userEntity;
 	
 	public DashBoard() {
+	}
+	
+	public DashBoard(UserEntity userEntity) {
+		this.userEntity = userEntity;
 	}
 	
 	public void start() {
@@ -27,7 +40,6 @@ public class DashBoard extends JFrame {
 	}
 	
 	public void showScreen() {
-		// TODO add menu
 		JPanel jPanel = new JPanel();
 		GridBagLayout layout = new GridBagLayout();
 		jPanel.setLayout(layout);
@@ -41,9 +53,9 @@ public class DashBoard extends JFrame {
 		jPanel.add(btnManage);
 		jPanel.add(btnTestExam);
 		jPanel.add(btnDocument);
-		btnManage.addActionListener(new BtnManageListener(self));
-		btnTestExam.addActionListener(new BtnTestExamListener(self));
-		btnDocument.addActionListener(new BtnDocumentListener(self));
+		btnManage.addActionListener(new BtnManageListener(getComunicatedDto()));
+		btnTestExam.addActionListener(new BtnTestExamListener(getComunicatedDto()));
+		btnDocument.addActionListener(new BtnDocumentListener(getComunicatedDto()));
 		controlPanel.add(jPanel);
 	}
 	
@@ -52,6 +64,14 @@ public class DashBoard extends JFrame {
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setVisible(true);
-		this.setTitle("Ứng dụng thi");
+		this.setJMenuBar(new Menu(getComunicatedDto(), TITLE).getMenu());
+		this.setTitle("");
+	}
+	
+	private ComunicatedDto getComunicatedDto() {
+		return ComunicatedDto.builder()
+				.frame(self)
+				.userEntity(userEntity)
+				.build();
 	}
 }

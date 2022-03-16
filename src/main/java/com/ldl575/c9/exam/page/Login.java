@@ -14,7 +14,6 @@ import javax.swing.JTextField;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-import com.ldl575.c9.exam.Menu;
 import com.ldl575.c9.exam.common.ShowMessage;
 import com.ldl575.c9.exam.entity.UserEntity;
 import com.ldl575.c9.exam.page.user.Register;
@@ -120,7 +119,7 @@ public class Login extends JFrame {
 				}
 
 				ShowMessage.info(self, "Login success!");
-				redirectToDashBoard();
+				redirectToDashBoard(userEntity);
 			}
 		});
 	}
@@ -131,12 +130,11 @@ public class Login extends JFrame {
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setVisible(true);
-		this.setJMenuBar(new Menu(this, TITLE).getMenu());
 		this.setTitle(TITLE);
 	}
 	
-	private void redirectToDashBoard() {
+	private void redirectToDashBoard(UserEntity userEntity) {
 		self.dispose();
-		new DashBoard().start();	
+		new DashBoard(userEntity).start();	
 	}
 }

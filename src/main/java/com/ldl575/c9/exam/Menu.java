@@ -5,8 +5,9 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
+import com.ldl575.c9.exam.dto.common.ComunicatedDto;
+import com.ldl575.c9.exam.entity.UserEntity;
 import com.ldl575.c9.exam.listener.BtnDocumentListener;
-import com.ldl575.c9.exam.listener.BtnLoginListener;
 import com.ldl575.c9.exam.listener.BtnManageListener;
 import com.ldl575.c9.exam.listener.BtnTestExamListener;
 
@@ -23,14 +24,16 @@ public class Menu {
 	private static final String LOGOUT = "Đăng xuất";
 
 	private JFrame frame;
-	private boolean isAdmin = true;
+	private UserEntity userEntity;
+	private boolean isAdmin;
 	private String currentMenu;
 	
 	public Menu() {
 	}
 	
-	public Menu(JFrame frame, String currentMenu) {
-		this.frame = frame;
+	public Menu(ComunicatedDto comunicatedDto, String currentMenu) {
+		this.frame = comunicatedDto.getFrame();
+		this.userEntity = comunicatedDto.getUserEntity();
 		this.currentMenu = currentMenu;
 	}
 	
@@ -44,7 +47,7 @@ public class Menu {
 		document(manageMenu);
 		
 		infor(inforMenu);
-		access(inforMenu);
+//		access(inforMenu);
 		
 		menuBar.add(manageMenu);
 		menuBar.add(inforMenu);
@@ -54,7 +57,7 @@ public class Menu {
 	private void manageExam(JMenu manageMenu) {
 		if (!currentMenu.equals(MANAGE_EXAM)) {
 			JMenuItem itemManageExam = new JMenuItem("Quản lý bài thi");
-			itemManageExam.addActionListener(new BtnManageListener(frame));
+			itemManageExam.addActionListener(new BtnManageListener(getComunicatedDto()));
 			manageMenu.add(itemManageExam);
 		}
 	}
@@ -62,7 +65,7 @@ public class Menu {
 	private void doExam(JMenu manageMenu) {
 		if (!currentMenu.equals(DO_EXAM)) {
 			JMenuItem itemDoExam = new JMenuItem("Làm bài thi");
-			itemDoExam.addActionListener(new BtnTestExamListener(frame));
+			itemDoExam.addActionListener(new BtnTestExamListener(getComunicatedDto()));
 			manageMenu.add(itemDoExam);
 		}
 	}
@@ -70,7 +73,7 @@ public class Menu {
 	private void document(JMenu manageMenu) {
 		if (!currentMenu.equals(DOCUMENT)) {
 			JMenuItem itemDocument = new JMenuItem("Tài liệu");
-			itemDocument.addActionListener(new BtnDocumentListener(frame));
+			itemDocument.addActionListener(new BtnDocumentListener(getComunicatedDto()));
 			manageMenu.add(itemDocument);
 		}
 	}
@@ -82,14 +85,21 @@ public class Menu {
 		}
 	}
 	
-	private void access(JMenu inforMenu) {
-		JMenuItem itemAccess;
-		if (isAdmin) {
-			itemAccess = new JMenuItem(LOGIN);
-			itemAccess.addActionListener(new BtnLoginListener(frame));
-		} else {
-			itemAccess = new JMenuItem(LOGOUT);
-		}
-		inforMenu.add(itemAccess);
+//	private void access(JMenu inforMenu) {
+//		JMenuItem itemAccess;
+//		if (isAdmin) {
+//			itemAccess = new JMenuItem(LOGIN);
+//			itemAccess.addActionListener(new BtnLoginListener(frame));
+//		} else {
+//			itemAccess = new JMenuItem(LOGOUT);
+//		}
+//		inforMenu.add(itemAccess);
+//	}
+	
+	private ComunicatedDto getComunicatedDto() {
+		return ComunicatedDto.builder()
+				.frame(frame)
+				.userEntity(userEntity)
+				.build();
 	}
 }

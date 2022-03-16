@@ -14,7 +14,6 @@ import javax.swing.JTextField;
 
 import org.mindrot.jbcrypt.BCrypt;
 
-import com.ldl575.c9.exam.Menu;
 import com.ldl575.c9.exam.common.ShowMessage;
 import com.ldl575.c9.exam.entity.UserEntity;
 import com.ldl575.c9.exam.page.Login;
@@ -159,7 +158,6 @@ public class Register extends JFrame {
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setVisible(true);
-		this.setJMenuBar(new Menu(this, TITLE).getMenu());
 		this.setTitle(TITLE);
 	}
 	
